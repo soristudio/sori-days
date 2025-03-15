@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoRi.Day</title>
+    <link rel="icon" href="./favicon/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="./favicon/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="./favicon/favicon-96x96.png" sizes="96x96" type="image/png">
+    <link rel="icon" href="./favicon/favicon-128x128.png" sizes="128x128" type="image/png">
+    <link rel="icon" href="./favicon/favicon-196x196.png" sizes="196x196" type="image/png">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet" type="text/css" />
+</head>
+
+<style>
+    /* Theme */
+    :root { --bg-color: #262626; --main-text-color: #fff; --sub-text-color: #aaa; }
+    .YORUNOSEIJAKU { --bg-color: #000; --main-text-color: #fff; --sub-text-color: #aaa; }
+    .MEIRYONASENGEN { --bg-color: #fff; --main-text-color: #000; --sub-text-color: #262626; }
+    .OUKARANMAN { --bg-color: #fce9ea; --main-text-color: #f6bdc5; --sub-text-color: #ea5e75; }
+    .HANAZUKIYO { --bg-color: #172d5d; --main-text-color: #fef5f3; --sub-text-color: #fde2a8; }
+    .TOUGENKYOU { --bg-color: #fff6e4; --main-text-color: #d64565; --sub-text-color: #f19db8; }
+    .SAYOSHIGURE { --bg-color: #53456b; --main-text-color: #003840; --sub-text-color: #6097b0; }
+    .AKATSUKI { --bg-color: #342438; --main-text-color: #aa1f32; --sub-text-color: #ea8c21; }
+    .YAMASHITATARU { --bg-color: #00512e; --main-text-color: #c2da75; --sub-text-color: #018573; }
+    .TSUKINOSHIZUKU { --bg-color: #e7ebf6; --main-text-color: #82a0b3; --sub-text-color: #3c6f98; }
+    .GINPA { --bg-color: #c6ceda; --main-text-color: #375578; --sub-text-color: #5a7f8e; }
+    .GEKKABIJIN { --bg-color: #2c2f3d; --main-text-color: #fdfce2; --sub-text-color: #e3cb66; }
+    .MONAKANOTSUKI { --bg-color: #212121; --main-text-color: #fee59f; --sub-text-color: #fcfdf3; }
+
+    .sub-text { color: var(--sub-text-color); }
+
+    body { background-color: var(--bg-color); color: var(--main-text-color); cursor: crosshair; display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh; margin: 0; font-family: 'Spoqa Han Sans Neo', monospace; font-weight: 900; transition: 0.9s; }
+    .app-container { position: relative; text-align: center; padding-top: 1rem; }
+    .main-heading { margin-bottom: 10px; letter-spacing: 2px; }
+
+    .contents-area { display: flex; flex-direction: column; gap: 5vw; position: relative; }
+    .main-result { width: 100%; text-align: center; letter-spacing: 0.5rem; font-size: 48px; }
+    .divider { width: 100%; max-width: 82vw; margin: 0 auto; height: 2px; background-color: var(--main-text-color); }
+
+    .input-base-style { padding: 10px; font-size: 1em; text-align: center; min-height: 26px; margin: 5px; color: var(--sub-text-color); background-color: var(--bg-color); border: 1px solid var(--main-text-color); }
+    .input-base-style[type='number']::-webkit-outer-spin-button, .input-base-style[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .input-base-style[type='number'] { appearance: textfield; -moz-appearance: textfield; }
+
+    .show-hide { transition: opacity 0.5s ease, visibility 0.5s ease; opacity: 1; visibility: visible; }
+    .show-hide.hidden { opacity: 0; visibility: hidden; }
+
+    .base-date { position: fixed; left: 1rem; top: 1rem; user-select: none; }
+    .app-theme { position: fixed; right: 1rem; top: 1rem; user-select: none; color: var(--sub-text-color); transition: 0.9s; }
+    .theme-text { position: absolute; right: 0; transition: opacity 0.9s ease; opacity: 1; }
+    .theme-text.hidden { opacity: 0; }
+    .app-copyright { display: none; position: fixed; right: 1rem; bottom: 1rem; user-select: none; color: var(--sub-text-color); }
+    .link { text-decoration: none; color: var(--main-text-color); }
+    .app-icons-container { position: fixed; left: 0rem; bottom: 0rem; user-select: none; fill: var(--main-text-color); cursor: pointer; }
+    .app-buttons { display: flex; }
+    .app-full { width: 24px; height: 24px; padding: 1rem; }
+    .app-book { width: 24px; height: 24px; padding: 1rem; }
+    .app-next { width: 24px; height: 24px; padding: 1rem; }
+
+    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 1rem; padding: 2rem 3rem;  overflow-y: auto; border-radius: 20px; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); width: 60%; max-width: 600px; max-height: 80%; margin: 0 auto; background-color: var(--bg-color); border: 1px solid var(--sub-text-color); opacity: 1; transition: 0.9s; z-index: 50; }
+    .modal.hidden { opacity: 0; z-index: -50; }
+    .modal-content { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .modal-heading { margin-top: 24px; font-size: 28px; font-weight: bold; color: var(--sub-text-color); }
+    .modal-guide-line { font-size: 14px; font-weight: bold; letter-spacing: 1.5px; color: var(--main-text-color); }
+
+    .modal-custom-input { display: flex; flex-direction: column; align-items: center; margin: 8px 0; }
+
+    .modal-close-button { background-color: var(--sub-text-color); color: var(--bg-color); font-size: 14px; font-weight: 600; width: 100%; max-width: 320px; min-height: 44px; margin: 0 auto; display: grid; place-items: center; border-radius: 2rem; text-align: center; cursor: pointer; }
+    .modal-close-button:hover { background-color: var(--main-text-color); }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 40; }
+    .modal-overlay.hidden { opacity: 0; z-index: -10; }
+
+    button { height: 44px; padding: 10px; font-size: 1em; text-align: center; margin: 5px; color: var(--main-text-color); background-color: var(--bg-color); outline: 1px solid var(--main-text-color); cursor: pointer; border-radius: 5px; }
+    .result-button { height: 48px; opacity: 0.5; transition: 0.3s; }
+    .result-button:hover, .result-button:focus { opacity: 1; }
+    .custom-input { width: calc(100% - 24px); max-width: 298px; opacity: 0.75; }
+    .custom-input:focus { opacity: 1; }
+    .custom-button { width: 100%; max-width: 320px; opacity: 0.75; }
+    .custom-button:hover { opacity: 1; }
+    input[type='date']::-webkit-calendar-picker-indicator { background-color: white; color: black; border-radius: 50%; padding: 5px; cursor: pointer; opacity: 0.5; }
+    input[type='date']::-webkit-calendar-picker-indicator:hover { background-color: gray; opacity: 1; }
+    .reset-button { margin: 0 auto; opacity: 0.5; transition: all 0.6s; }
+    .reset-button:hover { opacity: 1; background-color: #FF0000; color: #fff; }
+    .dday { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; height: 32px; padding: 0 1rem; }
+    .highlight { font-weight: bold; font-size: 1.5rem; color: var(--main-text-color); }
+    .sub-contents-form { display: grid; grid-template-columns: repeat(3, 1fr); padding: 1rem;}
+    .result-button { grid-column: span 3; }
+    .sub-section { 
+        height: 154px;
+        transition: 1s;
+    }
+    .sub-section:has(.hidden) {
+        height: 0;
+    }
+    /* min-width: 600 */
+    @media screen and (min-width: 600px) {
+        .main-heading { font-size: 1.5vw; }
+        .main-result { font-size: 15vw; letter-spacing: 1rem; }
+        .app-copyright { display: block; }
+        .sub-contents-form { display: grid; grid-template-columns: repeat(4, 1fr); padding: 1rem; }
+        .result-button { grid-column: auto; }
+    }
+</style>
+
+<body>
+
+    <div class="app-container">
+        <div class="main-heading sub-text" id="main-heading"></div>
+        <div class="contents-area">
+            <div class="section">
+                <div class="main-result main-text" id="mainResult"></div>
+                <div class="show-hide divider"></div>
+            </div>
+            <div class="sub-section">
+                <form id="dateForm" class="show-hide sub-contents-form" onsubmit="return false;" onclick="event.stopPropagation();" autofocus>
+                    <input type="number" class="input-base-style" id="yearInput" placeholder="" min="1900" max="2400" maxlength="4" oninput="checkYearInput(this)" onkeydown="adjustValue(this, event)" />
+                    <input type="number" class="input-base-style" id="monthInput" placeholder="" min="1" max="12" maxlength="2" oninput="limitLength(this, 2); validateMonth(this)" onkeydown="adjustValue(this, event)" />
+                    <input type="number" class="input-base-style" id="dayInput" placeholder="" min="1" max="31" maxlength="2" oninput="validateDay(this)" onkeydown="adjustValue(this, event)" />
+                    <button class="result-button" type="button" onclick="calculateInputDday()"> 계산하기 </button>
+                </form>
+                <p class="show-hide dday" id="subResult"><span style="opacity: 0.25">▲ Enter Your Date</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="show-hide base-date sub-text" id="base-date"></div>
+        <div class="show-hide app-copyright sub-text">copyrights <a href="https://zenn.kr" target="_blank" class="link">zenn</a>. all rights reserved.</div>
+        <div class="show-hide app-theme sub-text">
+            <div class="theme-text" id="current-theme"></div>
+            <div class="theme-text hidden" id="next-theme"></div>
+        </div>
+        <div class="show-hide app-icons-container">
+            <div class="app-buttons">
+                <div class="app-full"><svg id="enter-fullscreen-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg><svg id="exit-fullscreen-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25" /></svg></div>
+                <div class="app-book"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg></div>
+                <div class="app-next"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></div>
+            </div>
+        </div>
+        <div class="modal hidden">
+            <div class="modal-content">
+                <h2 class="modal-heading">사용방법</h2>
+                <p class="modal-guide-line">1. 마우스 [클릭] 또는 [SPACE] 버튼으로 메뉴를 보이게 할 수 있습니다.</p>
+                <p class="modal-guide-line">2. [F] 키를 눌러 전체 화면모드로 변경할 수 있습니다.</p>
+                <p class="modal-guide-line">3. '[' 키 또는 ']'키를 눌러 테마를 변경할 수 있습니다.</p>
+            </div>
+            <div class="modal-content">
+                <div class="modal-custom-input">
+                    <label for="customText">제목 설정</label>
+                    <input class="input-base-style custom-input" type="text" id="customText" placeholder="텍스트를 입력하세요" />
+                    <button class="custom-button" id="saveCustomText">제목 저장</button>
+                </div>
+                <div class="modal-custom-input">
+                    <label for="customDate">기준일 설정</label>
+                    <input class="input-base-style custom-input" type="date" id="customDate" />
+                    <button class="custom-button" id="saveCustomDate">기준일 저장</button>
+                </div>
+            </div>
+            <button class="custom-button reset-button" id="clearStorage">초기화</button>
+            <div class="modal-close-button" onclick="closeModal()">닫기</div>
+        </div>
+    </div>
+    <div class="modal-overlay hidden" onclick="closeModal()"></div>
+
+<script>
+    // ❗️Storage
+    const storedText = localStorage.getItem('customText');
+    const storedDate = localStorage.getItem('customDate');
+    let displayText = storedText || 'SoRi.Day';
+    let baseDate = storedDate ? new Date(storedDate) : new Date(Date.UTC(2018, 1, 4));
+    document.getElementById('saveCustomText').addEventListener('click', () => { const customText = document.getElementById('customText').value; if (customText.trim()) { localStorage.setItem('customText', customText); mainHeading.textContent = customText; alert(`제목을 변경하였습니다`); } else { alert('유효한 텍스트를 입력하세요'); } });
+    document.getElementById('saveCustomDate').addEventListener('click', () => { const customDate = document.getElementById('customDate').value; if (customDate) { localStorage.setItem('customDate', customDate); baseDate = new Date(customDate); location.reload(); alert(`기준일을 변경하였습니다`); } else { alert('유효한 날짜를 입력하세요'); } });
+    document.getElementById('clearStorage').addEventListener('click', () => { const confirmation = confirm('정말로 저장된 내용을 초기화하시겠습니까?'); if (confirmation) { localStorage.removeItem('customText'); localStorage.removeItem('customDate'); location.reload(); alert('초기화하였습니다'); } });
+
+    // ❗️Site Features
+    document.body.addEventListener('click', function () { const showHideElements = document.querySelectorAll('.show-hide'); showHideElements.forEach(element => { if (element.classList.contains('hidden')) { element.classList.remove('hidden'); } else { element.classList.add('hidden'); } }); });
+    window.onload = function () { const showHideElements = document.querySelectorAll('.show-hide'); showHideElements.forEach(element => { element.style.display = 'block'; }); };
+
+    // MENU: FULL
+    const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
+    const enterFullscreenIcon = document.getElementById('enter-fullscreen-icon');
+    enterFullscreenIcon.style.display = 'block';
+    exitFullscreenIcon.style.display = 'none';
+    function toggleFullScreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); enterFullscreenIcon.style.display = 'none'; exitFullscreenIcon.style.display = 'block'; } else { if (document.exitFullscreen) { document.exitFullscreen(); enterFullscreenIcon.style.display = 'block'; exitFullscreenIcon.style.display = 'none'; } } }
+    document.addEventListener('keydown', function (event) { if (event.code === 'KeyF') { toggleFullScreen(); } else if (event.code === 'Space') { const showHideElements = document.querySelectorAll('.show-hide'); showHideElements.forEach(element => { if (element.classList.contains('hidden')) { element.classList.remove('hidden'); } else { element.classList.add('hidden'); } }); } });
+    const fullScreenButton = document.querySelector('.app-full');
+    fullScreenButton.addEventListener('click', function () { event.stopPropagation(); toggleFullScreen(); });
+
+    // MENU: BOOK
+    showHideOverlay = document.querySelector('.modal-overlay');
+    let theBook = document.querySelector('.app-book');
+    theBook.addEventListener('click', () => { event.stopPropagation(); showHideGuideBook = document.querySelector('.modal'); if (showHideGuideBook.classList.contains('hidden')) { showHideGuideBook.classList.remove('hidden'); } if (showHideOverlay.classList.contains('hidden')) { showHideOverlay.classList.remove('hidden'); } });
+    function closeModal(event) { showHideGuideBook = document.querySelector('.modal'); if (!showHideGuideBook.classList.contains('hidden')) { showHideGuideBook.classList.add('hidden'); } if (!showHideOverlay.classList.contains('hidden')) { showHideOverlay.classList.add('hidden'); } }
+
+    // MENU: THEME
+    const themes = [ '밤하늘', '명료한 선언', '앵화난만', '화월야', '도원향', '소야시우', '밤의 고요함', '적월', '녹음이 우거진 산', '달의 물방울', '은파', '월하미인', '음력 보름밤의 달' ];
+    let currentThemeIndex = 0;
+    function setTheme(theme) { const body = document.body; const themeName = document.querySelector('.app-theme'); const currentThemeElement = document.getElementById('current-theme'); const nextThemeElement = document.getElementById('next-theme'); body.className = ''; switch (theme) { case '밤의 고요함': body.classList.add('YORUNOSEIJAKU'); break; case '명료한 선언': body.classList.add('MEIRYONASENGEN'); break; case '앵화난만': body.classList.add('OUKARANMAN'); break; case '화월야': body.classList.add('HANAZUKIYO'); break; case '도원향': body.classList.add('TOUGENKYOU'); break; case '소야시우': body.classList.add('SAYOSHIGURE'); break; case '적월': body.classList.add('AKATSUKI'); break; case '녹음이 우거진 산': body.classList.add('YAMASHITATARU'); break; case '달의 물방울': body.classList.add('TSUKINOSHIZUKU'); break; case '은파': body.classList.add('GINPA'); break; case '월하미인': body.classList.add('GEKKABIJIN'); break; case '음력 보름밤의 달': body.classList.add('MONAKANOTSUKI'); break; default: break; } nextThemeElement.textContent = theme.replace(/-/g, ' ').toUpperCase(); nextThemeElement.classList.remove('hidden'); setTimeout(() => { currentThemeElement.classList.add('hidden'); setTimeout(() => { currentThemeElement.textContent = nextThemeElement.textContent; currentThemeElement.classList.remove('hidden'); nextThemeElement.classList.add('hidden'); }, 900); }, 0); }
+    function changeThemeIndex(direction) { if (direction === 'next') { currentThemeIndex = (currentThemeIndex + 1) % themes.length; } else if (direction === 'prev') { currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length; } const nextTheme = themes[currentThemeIndex]; setTheme(nextTheme); }
+    document.addEventListener('keydown', function (event) { if (event.key === '[') { changeThemeIndex('prev'); } else if (event.key === ']') { changeThemeIndex('next'); } });
+    const nextThemeButton = document.querySelector('.app-next');
+    nextThemeButton.addEventListener('click', function () { event.stopPropagation(); changeThemeIndex('next'); });
+
+    // ❗️MainHeading
+    const mainHeading = document.getElementById('main-heading');
+    mainHeading.textContent = displayText;
+
+    // ❗️D-Day
+    const maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    function getToday() { const now = new Date(); return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())); }
+    function isLeapYear(year) { return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0; }
+    // 월별 최대 일수 반환
+    function getMaxDays(year, month) { let monthNumber = parseInt(month, 10); if (monthNumber > 12) { monthNumber = 12; } if (monthNumber === 2) return isLeapYear(year) ? 29 : 28; return maxDaysInMonth[monthNumber - 1]; }
+    // 오늘 D-Day 계산
+    function calculateTodayDday() { const today = getToday(); const diffTime = today - baseDate; const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); const sign = diffDays >= 0 ? '+' : '-'; document.getElementById('mainResult').textContent = `D${sign}${Math.abs(diffDays)}`; }
+    // 플레이스홀더 한달전 날짜 설정
+    function setPlaceholders() { const today = new Date(); today.setMonth(today.getMonth() - 1); document.getElementById('yearInput').placeholder = today.getUTCFullYear(); document.getElementById('monthInput').placeholder = String( today.getUTCMonth() + 1 ).padStart(2, '0'); document.getElementById('dayInput').placeholder = String( today.getUTCDate() ).padStart(2, '0'); }
+    // 연도 입력 제한 설정 (현재 연도 기준으로 최소 -100년, 최대 +100년)
+    function setYearLimit() { const today = getToday(); const currentYear = today.getUTCFullYear(); const minYear = currentYear - 100; const maxYear = currentYear + 100; document.getElementById('yearInput').setAttribute('min', minYear); document.getElementById('yearInput').setAttribute('max', maxYear); }
+    // 사용자 입력값을 기준으로 D-Day 계산
+    function calculateInputDday() { const today = new Date(); today.setMonth(today.getMonth() - 1); const yearInput = document.getElementById('yearInput').value || today.getUTCFullYear(); const monthInput = document.getElementById('monthInput').value || String(today.getUTCMonth() + 1).padStart(2, '0'); const dayInput = document.getElementById('dayInput').value || String(today.getUTCDate()).padStart(2, '0'); if (!isValidDate(yearInput, monthInput, dayInput)) { alert('올바른 날짜를 입력해주세요!'); return; } const inputDate = new Date(Date.UTC(yearInput, monthInput - 1, dayInput)); const diffTime = inputDate - baseDate; const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); const sign = diffDays >= 0 ? '+' : '-'; document.getElementById( 'subResult', ).innerHTML = `${yearInput}년 ${monthInput}월 ${dayInput}일은 기준일로부터 <span class="highlight">「 D${sign}${Math.abs( diffDays, )} 」</span>입니다.`; }
+    // 입력값 길이 제한
+    function limitLength(input, maxLength) { if (input.value.length > maxLength) { input.value = input.value.slice(0, maxLength); } }
+    // 유효 날짜 검증
+    function isValidDate(year, month, day) { if (!year || !month || !day) return false; const maxDays = getMaxDays(year, month); if (day > maxDays) return false; const date = new Date(Date.UTC(year, month - 1, day)); return (date.getUTCFullYear() === parseInt(year, 10) && date.getUTCMonth() === parseInt(month, 10) - 1 && date.getUTCDate() === parseInt(day, 10)); }
+    // 일자 자동 보정
+    function validateDay(input) { const year = document.getElementById('yearInput').value || getToday().getUTCFullYear(); const month = document.getElementById('monthInput').value || getToday().getUTCMonth() + 1; const maxDays = getMaxDays(year, month); if (input.value > maxDays) { input.value = maxDays; } }
+    // 월 입력값 검증 (oninput에서 처리)
+    function validateMonth(input) { let month = parseInt(input.value, 10); if (month < 1) { input.value = 1; } else if (month > 12) { input.value = 12; } }
+    // 연도 입력값 검증 (4자리 입력 후 바로 처리)
+    function checkYearInput(input) { const year = input.value; if (year.length > 4) { input.value = year.slice(0, 4); } if (year.length === 4) { const currentYear = getToday().getUTCFullYear(); const minYear = currentYear - 100; const maxYear = currentYear + 100; if (year < minYear) { input.value = minYear; } else if (year > maxYear) { input.value = maxYear; } } }
+    // 방향키에 따라 값 조정
+    function adjustValue(input, event) { if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { event.preventDefault(); let currentValue = parseInt(input.value, 10); if (isNaN(currentValue)) { if (input.id === 'yearInput') { currentValue = getToday().getUTCFullYear(); } else if (input.id === 'monthInput') { currentValue = getToday().getUTCMonth() + 1; } else if (input.id === 'dayInput') { currentValue = getToday().getUTCDate(); } } const step = event.key === 'ArrowUp' ? 1 : -1; if (input.id === 'yearInput') { let year = currentValue + step; input.value = year; } else if (input.id === 'monthInput') { let month = currentValue + step; if (month > 12) month = 12; if (month < 1) month = 1; input.value = month; } else if (input.id === 'dayInput') { let day = currentValue + step; if (day < 1) day = 1; const year = document.getElementById('yearInput').value || getToday().getUTCFullYear(); const month = document.getElementById('monthInput').value || getToday().getUTCMonth() + 1; const maxDays = getMaxDays(year, month); if (day > maxDays) day = maxDays; input.value = day; } } }
+    // 엔터키로 D-Day 계산 실행
+    document.getElementById('dateForm').addEventListener('keydown', function (event) { if (event.key === 'Enter') { event.preventDefault(); calculateInputDday(); document.activeElement.blur(); setTimeout(function () { document.getElementById('yearInput').focus(); }, 0); } });
+    // 날짜 포맷팅 함수
+    function formatDate(baseDate) { const year = baseDate.getFullYear(); const month = String(baseDate.getMonth() + 1).padStart(2, '0'); const day = String(baseDate.getDate()).padStart(2, '0'); return `${year}. ${month}. ${day}`; }
+    const formattedDate = formatDate(baseDate);
+
+    // ❗️페이지 로드 시 실행
+    window.onload = function () {
+        setTheme(themes[currentThemeIndex]);
+        document.getElementById('base-date').textContent = formattedDate;
+        setYearLimit();
+        setPlaceholders();
+        calculateTodayDday();
+    };
+</script>
+
+</body>
+</html>
